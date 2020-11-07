@@ -1,25 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import {Switch, Route} from 'react-router-dom'
+import {connect} from 'react-redux'
 
-function App() {
+import Home from './pages/home/Home'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/register/Register'
+import Profile from './pages/profiles/profile'
+import History from './pages/users/History'
+import Verified from './pages/verified/verified'
+import ManageProduct from './pages/admin/ManageProd'
+import ManageTrans from './pages/admin/ManageTrans'
+import SearchDrug from './pages/searchdrug/SearchDrug'
+import Loading from './components/Loading'
+import NotFound from './components/NotFound'
+import {KeepLogin} from './redux/actions'
+
+function App({KeepLogin, isLoading, role}) {
+
+  useEffect(()=> {
+    let datauser = localStorage.getItem('user')
+    if(datauser) {
+      KeepLogin()
+    } 
+  },[])
+
+  const renderProtectedRoutes = () => {
+    if(role === 'admin') {
+      return(
+        <>
+          <Route exact path='/ManageProduct' component={ManageProduct} />
+          <Route exact path='/ManageTrans' component={ManageTrans} />
+        </>
+      )
+    } 
+  }
+
+  if(isLoading) {
+    return (
+      <Loading />
+    )
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/register' component={Register} />
+        <Route exact path='/verified' component={Verified} />
+        <Route exact path='/Profile' component={Profile} />
+        <Route exact path='/History' component={History} />
+        <Route exact path='/SearchDrug' component={SearchDrug} />
+        {renderProtectedRoutes()}
+        <Route path='*' component={NotFound} />
+      </Switch>
     </div>
   );
 }
 
-export default App;
+const Mapstatetoprops = ({Auth}) => {
+  return {
+    ...Auth
+  }
+}
+
+export default connect(Mapstatetoprops,{KeepLogin}) (App);
