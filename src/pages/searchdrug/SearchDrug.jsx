@@ -10,6 +10,12 @@ import Typography from '@material-ui/core/Typography';
 import Header from './../../components/Header'
 import Axios from 'axios';
 import { API_URL_SQL } from '../../helpers/apiurl';
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {OpenModal} from './../../redux/actions'
+import TheModal from './../../components/Modal'
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles({
   media: {
@@ -17,52 +23,121 @@ const useStyles = makeStyles({
   },
 });
 
-function DrugCard() {
+function DrugCard({OpenModal, role, id, token}) {
     const classes = useStyles();
     const [drug, setdrug] = useState([])
+    const [page, setpage] = useState(1)
+    const [countmed, setcountmed] = useState('')
 
     useEffect(()=> {
         let drugdata = localStorage.getItem('searchdata')
-        console.log(drugdata);
+        // console.log(drugdata);
         if(drugdata) {
             Axios.get(`${API_URL_SQL}/search/specifieddrug/${drugdata}`)
             .then((res)=> {
-                setdrug(res.data)
+                setdrug(res.data.dataSpecMedic)
+                setcountmed(res.data.countMedicines[0].amountofmed)
             }).catch(err=> {
                 console.log(err.response.data.message);
             })
         } else {
-            Axios.get(`${API_URL_SQL}/search/searchdrug`)
-            .then((res)=> {
-                setdrug(res.data)
-            }).catch(err=> {
+            fetchdata()
+        }
+    },[])
+
+    useEffect(()=> {
+        let drugdata = localStorage.getItem('searchdata')
+        if(!drugdata) {
+            fetchdata()
+        }
+    },[page])
+
+    const fetchdata = async () => {
+        try {
+          var res = await Axios.get(`${API_URL_SQL}/search/searchdrug?page=${page}`)
+          setdrug(res.data.dataMedicines)
+          setcountmed(res.data.countMedicines[0].amountofmed)
+        } catch (error) {
+            console.log(error.response.data.message);
+        }
+      }
+
+    const movePage = (value) => {
+        setpage(value)
+    }
+
+    const renderPage = () => {
+        let amountPage = Math.ceil(countmed/8)
+        let arr = new Array(amountPage)
+        for(let i=0; i<arr.length; i++) {
+            if((i+1)===page) {
+                arr[i] = (
+                    <PaginationItem key={i} disabled>
+                        <PaginationLink >
+                            {i+1}
+                        </PaginationLink>
+                    </PaginationItem>
+                )
+            } else {
+                arr[i] = (
+                    <PaginationItem key={i} onClick={()=>movePage(i+1)} >
+                        <PaginationLink >
+                            {i+1}
+                        </PaginationLink>
+                    </PaginationItem>
+                )
+            }
+        }
+        return arr
+    }
+
+    const onOpenMod = (idMed) => {
+        if(role === 'admin') {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Anda Admin tidak bisa beli!',
+              })
+        } else {
+            Axios.post(`${API_URL_SQL}/transac/addtocart`,{
+                userid: id,
+                medid: idMed
+            },{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }).then((res)=> {
+                OpenModal(res.data)
+            }).catch((err)=> {
                 console.log(err.response.data.message);
             })
         }
-    },[])
+    }
 
     const renderCard = () => {
         return drug.map((val, ind)=> {
             return (
-                <div className='col-md-2 py-2'>
-                    <Card key={ind} className='shadow bg-white rounded' style={{maxWidth: 250}}>
+                <div key={ind} className='col-md-3 py-2'>
+                    <Card className='shadow bg-white rounded' style={{maxWidth: 250}}>
                         <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image={API_URL_SQL + val.photo}
-                                style={{width: '100%', height: '170px'}}
-                            />
+                            <Link to={'/ProfileMedicine/'+val.id}>
+                                <CardMedia
+                                    className={classes.media}
+                                    image={API_URL_SQL + val.photo}
+                                    style={{width: '100%', height: '170px'}}
+                                />
+                            </Link>
                             <CardContent style={{height: '80px'}}>
-                                <Typography gutterBottom style={{fontSize: '13px', marginLeft: '10%'}}>
+                                <Typography gutterBottom style={{fontSize: '13px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                                     {val.drugname}
                                 </Typography>
                             </CardContent>
-                            <Typography gutterBottom style={{fontSize: '15px', marginLeft: '20%', color: '#ff8c00'}}>
+                            <Typography gutterBottom style={{fontSize: '15px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ff8c00'}}>
                                 Rp. {val.price} / {val.package}
                             </Typography>
                         </CardActionArea>
                         <CardActions>
-                            <Button size="small" color="primary">
+                            <Button size="small" color="primary" onClick={()=>onOpenMod(val.id)}>
                                 Beli
                             </Button>
                         </CardActions>
@@ -75,11 +150,21 @@ function DrugCard() {
     return (
         <>
             <Header />
-            <div className='row m-0 mt-5 p-0'>
+            <TheModal />
+            <div className='row m-0 mt-5 px-5'>
                 {renderCard()}
             </div>
+            <Pagination className='px-5' aria-label="Page navigation example">
+            {renderPage()}
+            </Pagination>
         </>
     );
 }
 
-export default DrugCard
+const Mapstatetoprops = ({Auth}) => {
+    return {
+        ...Auth
+    }
+}
+
+export default connect(Mapstatetoprops, {OpenModal})(DrugCard)

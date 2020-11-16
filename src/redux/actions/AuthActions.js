@@ -34,15 +34,16 @@ export const KeepLogin = () => {
     return (dispatch)=> {
         dispatch({type: 'LOADING'})
         let datauser = localStorage.getItem('user')
-
+        
         if(datauser){
             datauser = JSON.parse(datauser)
             Axios.get(`${API_URL_SQL}/auth/keeplogin/${datauser.id}`)
             .then((res)=> {
-                localStorage.setItem('user', JSON.stringify(res.data))
-                dispatch({type: 'LOGIN', payload: datauser})
+                localStorage.setItem('user', JSON.stringify(res.data.datalogin))
+                dispatch({type: 'LOGIN', payload: res.data.datalogin, cart: res.data.cartData})
             }).catch((err)=> {
                 dispatch({type: 'ERROR'})
+                console.log(err.response.data.message);
             })
             // Axios.get(`${API_URL}/users/${datauser.id}`)
             // .then((res)=> {

@@ -11,6 +11,7 @@ import Verified from './pages/verified/verified'
 import ManageProduct from './pages/admin/ManageProd'
 import ManageTrans from './pages/admin/ManageTrans'
 import SearchDrug from './pages/searchdrug/SearchDrug'
+import ProfileDrug from './pages/searchdrug/profileDrug'
 import Loading from './components/Loading'
 import NotFound from './components/NotFound'
 import {KeepLogin} from './redux/actions'
@@ -51,6 +52,7 @@ function App({KeepLogin, isLoading, role}) {
         <Route exact path='/Profile' component={Profile} />
         <Route exact path='/History' component={History} />
         <Route exact path='/SearchDrug' component={SearchDrug} />
+        <Route exact path='/ProfileMedicine/:id' component={ProfileDrug} />
         {renderProtectedRoutes()}
         <Route path='*' component={NotFound} />
       </Switch>

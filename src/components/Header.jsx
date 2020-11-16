@@ -240,7 +240,7 @@ function Header({username, isLogin, role, LogoutFunc}) {
   useEffect(()=> {
     Axios.get(`${API_URL_SQL}/search/searchdrug`)
     .then((res)=> {
-      setMedicine(res.data)
+      setMedicine(res.data.dataMedicines)
     }).catch(err=> {
       console.log(err);
     })
@@ -288,9 +288,9 @@ function Header({username, isLogin, role, LogoutFunc}) {
   }
 
   const renderSearchMedic = () => {
-    return filterMedic.map((val)=> {
+    return filterMedic.map((val, ind)=> {
       return (
-        <div style={{
+        <div key={val.id} style={{
           textDecoration:'none', 
           color:'black',
           cursor: 'pointer',
@@ -313,7 +313,6 @@ function Header({username, isLogin, role, LogoutFunc}) {
   let history = useHistory()
 
   const onInputSubmit = (e) => {
-    console.log('ntaps');
     e.preventDefault()
     let datasearch = usersearch.toUpperCase()
     localStorage.setItem('searchdata', datasearch)
