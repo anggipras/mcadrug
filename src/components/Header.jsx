@@ -290,18 +290,20 @@ function Header({username, isLogin, role, LogoutFunc}) {
   const renderSearchMedic = () => {
     return filterMedic.map((val, ind)=> {
       return (
-        <div key={val.id} style={{
-          textDecoration:'none', 
-          color:'black',
-          cursor: 'pointer',
-          borderRadius: 3,
-          paddingLeft: '5px'
-          }}
-          onMouseEnter = {(e)=> onMouseOver(e)}
-          onMouseOut = {(e)=> onMouseExit(e)}
-          >
-          {val.drugname}
-        </div>
+        <Link to={'/ProfileMedicine/'+val.id}>
+          <div key={val.id} style={{
+            textDecoration:'none', 
+            color:'black',
+            cursor: 'pointer',
+            borderRadius: 3,
+            paddingLeft: '5px'
+            }}
+            onMouseEnter = {(e)=> onMouseOver(e)}
+            onMouseOut = {(e)=> onMouseExit(e)}
+            >
+            {val.drugname}
+          </div>
+        </Link>
       )
     })
   }
@@ -316,7 +318,8 @@ function Header({username, isLogin, role, LogoutFunc}) {
     e.preventDefault()
     let datasearch = usersearch.toUpperCase()
     localStorage.setItem('searchdata', datasearch)
-    history.push('/SearchDrug')
+    history.push('/SearchDrug/'+usersearch.toUpperCase())
+    setOpen(false)
   }
 
   return (
@@ -368,7 +371,7 @@ function Header({username, isLogin, role, LogoutFunc}) {
               onClose={()=>setOpen(false)}
               >
                 <Typography>
-                  <Link to='/SearchDrug'>
+                  <Link to={'/SearchDrug/'+usersearch.toUpperCase()}>
                     <div style={{
                         color: 'black', 
                         paddingLeft: '5px',
@@ -388,7 +391,7 @@ function Header({username, isLogin, role, LogoutFunc}) {
               :
               null
           }
-          <Link to='/SearchDrug'>
+          <Link to={'/SearchDrug/'+usersearch.toUpperCase()}>
             <button onClick={onInputSearch} style={{border: 'none', borderRadius: '5px 5px 5px 5px', marginLeft: '-20px'}}>
               <div className={classes.searchIcon}>
                 <SearchIcon />

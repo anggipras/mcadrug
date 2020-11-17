@@ -51,7 +51,7 @@ function App({KeepLogin, isLoading, role}) {
         <Route exact path='/verified' component={Verified} />
         <Route exact path='/Profile' component={Profile} />
         <Route exact path='/History' component={History} />
-        <Route exact path='/SearchDrug' component={SearchDrug} />
+        <Route exact path='/SearchDrug/:drugname' component={SearchDrug} />
         <Route exact path='/ProfileMedicine/:id' component={ProfileDrug} />
         {renderProtectedRoutes()}
         <Route path='*' component={NotFound} />

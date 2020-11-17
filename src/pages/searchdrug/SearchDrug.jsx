@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-function DrugCard({OpenModal, role, id, token}) {
+function DrugCard({OpenModal, role, id, token, match}) {
     const classes = useStyles();
     const [drug, setdrug] = useState([])
     const [page, setpage] = useState(1)
@@ -31,7 +31,6 @@ function DrugCard({OpenModal, role, id, token}) {
 
     useEffect(()=> {
         let drugdata = localStorage.getItem('searchdata')
-        // console.log(drugdata);
         if(drugdata) {
             Axios.get(`${API_URL_SQL}/search/specifieddrug/${drugdata}`)
             .then((res)=> {
@@ -49,8 +48,16 @@ function DrugCard({OpenModal, role, id, token}) {
         let drugdata = localStorage.getItem('searchdata')
         if(!drugdata) {
             fetchdata()
+        } else {
+            Axios.get(`${API_URL_SQL}/search/specifieddrug/${match.params.drugname}`)
+            .then((res)=> {
+                setdrug(res.data.dataSpecMedic)
+                setcountmed(res.data.countMedicines[0].amountofmed)
+            }).catch(err=> {
+                console.log(err.response.data.message);
+            })
         }
-    },[page])
+    },[page, match])
 
     const fetchdata = async () => {
         try {

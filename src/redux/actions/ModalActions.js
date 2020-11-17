@@ -10,3 +10,15 @@ export const CloseModal = () => {
         type: 'CLOSEMOD'
     }
 }
+
+export const AcceptPrice = () => {
+    return {
+        type: 'ACCEPTPRICE'
+    }
+}
+
+export const LessPrice = () => {
+    return {
+        type: 'LESSPRICE'
+    }
+}

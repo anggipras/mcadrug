@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     isLoading: false,
     error: '',
     modalcart: false,
-    cart: []
+    cart: [],
+    minprice: true
 }
 
 export default (state=INITIAL_STATE, action)=> {
@@ -21,7 +22,9 @@ export default (state=INITIAL_STATE, action)=> {
         case 'DISABLEDBTN':
             return {...state, isSaved: false}
         case 'REGISTER':
-            return {...state,...action.payload, isLogin: true, isLoading: false, thxBtn: true}
+            return {...state,...action.payload, isLogin: true, isLoading: false}
+        case 'REGISBTN':
+            return {...state, thxBtn: true}
         case 'LOGOUT':
             return INITIAL_STATE
         case 'LOADING':
@@ -32,6 +35,10 @@ export default (state=INITIAL_STATE, action)=> {
             return {...state, modalcart: true, cart: action.cart}
         case 'CLOSEMOD':
             return {...state, modalcart: false}
+        case 'ACCEPTPRICE':
+            return {...state, minprice: false}
+        case 'LESSPRICE':
+            return {...state, minprice: true}
         default:
             return state
     }

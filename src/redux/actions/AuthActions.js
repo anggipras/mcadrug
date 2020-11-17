@@ -64,7 +64,7 @@ export const LogoutFunc = () => {
 
 export const RegisThunk = (completeDataRegis) => {
     return (dispatch)=> {
-        dispatch({type: 'LOADING'})
+        dispatch({type: 'REGISBTN'})
         Axios.post(`${API_URL_SQL}/auth/register`,completeDataRegis)
         .then((res)=> {
             localStorage.setItem('user', JSON.stringify(res.data))
