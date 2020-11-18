@@ -16,11 +16,6 @@ import {AiFillTags} from 'react-icons/ai'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-// import ObatBebas from './../../assets/golobat/obatbebas.jpg'
-// import ObatBebasTerbatas from './../../assets/golobat/obatbebasterbatas.jpg'
-// import ObatKeras from './../../assets/golobat/obatkeras.png'
-// import ObatJamu from './../../assets/golobat/obatjamu.png'
-// import ObatHerbal from './../../assets/golobat/obatherbal.png'
 
 const useStyles = makeStyles({
     root: {

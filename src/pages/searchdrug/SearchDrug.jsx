@@ -16,6 +16,11 @@ import {connect} from 'react-redux'
 import {OpenModal} from './../../redux/actions'
 import TheModal from './../../components/Modal'
 import Swal from 'sweetalert2'
+import ObatBebas from './../../assets/golobat/obatbebas.jpg'
+import ObatBebasTerbatas from './../../assets/golobat/obatbebasterbatas.jpg'
+import ObatKeras from './../../assets/golobat/obatkeras.png'
+import ObatJamu from './../../assets/golobat/obatjamu.png'
+import ObatHerbal from './../../assets/golobat/obatherbal.png'
 
 const useStyles = makeStyles({
   media: {
@@ -23,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-function DrugCard({OpenModal, role, id, token, match}) {
+function DrugCard({OpenModal, role, id, token, searchname}) {
     const classes = useStyles();
     const [drug, setdrug] = useState([])
     const [page, setpage] = useState(1)
@@ -49,7 +54,7 @@ function DrugCard({OpenModal, role, id, token, match}) {
         if(!drugdata) {
             fetchdata()
         } else {
-            Axios.get(`${API_URL_SQL}/search/specifieddrug/${match.params.drugname}`)
+            Axios.get(`${API_URL_SQL}/search/specifieddrug/${searchname}`)
             .then((res)=> {
                 setdrug(res.data.dataSpecMedic)
                 setcountmed(res.data.countMedicines[0].amountofmed)
@@ -57,7 +62,7 @@ function DrugCard({OpenModal, role, id, token, match}) {
                 console.log(err.response.data.message);
             })
         }
-    },[page, match])
+    },[page, searchname])
 
     const fetchdata = async () => {
         try {
@@ -128,6 +133,7 @@ function DrugCard({OpenModal, role, id, token, match}) {
                     <Card className='shadow bg-white rounded' style={{maxWidth: 250}}>
                         <CardActionArea>
                             <Link to={'/ProfileMedicine/'+val.id}>
+                                <img className='mt-2 ml-2' src={val.class==='obat bebas'? ObatBebas:ObatKeras} alt="golobat"/>
                                 <CardMedia
                                     className={classes.media}
                                     image={API_URL_SQL + val.photo}
@@ -158,11 +164,26 @@ function DrugCard({OpenModal, role, id, token, match}) {
         <>
             <Header />
             <TheModal />
-            <div className='row m-0 mt-5 px-5'>
+            <div className='row m-0 mt-5 px-5' style={{display: 'flex', justifyContent: 'space-between'}}>
+                <div>
+                    Hasil Pencarian {"("} {drug.length} {")"}
+                </div>
+                {
+                    searchname?
+                    <div className='p-1' style={{border: '1px solid black', backgroundColor: 'lightgray', boxShadow: '3px 3px 6px rgba(0, 0, 0, 0.3)'}}>
+                        Kata Kunci "{searchname}"
+                    </div>
+                    :
+                    <div>
+                        Kata Kunci "Semua Obat"
+                    </div>
+                }
+            </div>
+            <div className='row m-0 mt-2 px-5'>
                 {renderCard()}
             </div>
             <Pagination className='px-5' aria-label="Page navigation example">
-            {renderPage()}
+                {renderPage()}
             </Pagination>
         </>
     );

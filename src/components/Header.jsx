@@ -27,7 +27,7 @@ import Typography from '@material-ui/core/Typography';
 
 import {Link, Switch, Route, useHistory} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {LogoutFunc} from './../redux/actions'
+import {LogoutFunc, SearchMed} from './../redux/actions'
 import Axios from 'axios';
 import { API_URL_SQL } from '../helpers/apiurl';
 import debounce from 'lodash.debounce'
@@ -103,7 +103,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Header({username, isLogin, role, LogoutFunc}) {
+function Header({username, isLogin, role, LogoutFunc, cart, SearchMed}) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -120,9 +120,9 @@ function Header({username, isLogin, role, LogoutFunc}) {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  // const handleMobileMenuOpen = (event) => {
+  //   setMobileMoreAnchorEl(event.currentTarget);
+  // };
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -249,6 +249,7 @@ function Header({username, isLogin, role, LogoutFunc}) {
   const onInputSearch = () => {
     let datasearch = usersearch.toUpperCase()
     localStorage.setItem('searchdata', datasearch)
+    SearchMed(datasearch)
   }
 
   const onSearchDrugChange = (e) => {
@@ -318,7 +319,8 @@ function Header({username, isLogin, role, LogoutFunc}) {
     e.preventDefault()
     let datasearch = usersearch.toUpperCase()
     localStorage.setItem('searchdata', datasearch)
-    history.push('/SearchDrug/'+usersearch.toUpperCase())
+    SearchMed(datasearch)
+    history.push('/SearchDrug')
     setOpen(false)
   }
 
@@ -371,7 +373,7 @@ function Header({username, isLogin, role, LogoutFunc}) {
               onClose={()=>setOpen(false)}
               >
                 <Typography>
-                  <Link to={'/SearchDrug/'+usersearch.toUpperCase()}>
+                  <Link to='/SearchDrug'>
                     <div style={{
                         color: 'black', 
                         paddingLeft: '5px',
@@ -391,7 +393,7 @@ function Header({username, isLogin, role, LogoutFunc}) {
               :
               null
           }
-          <Link to={'/SearchDrug/'+usersearch.toUpperCase()}>
+          <Link to='/SearchDrug'>
             <button onClick={onInputSearch} style={{border: 'none', borderRadius: '5px 5px 5px 5px', marginLeft: '-20px'}}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -405,7 +407,7 @@ function Header({username, isLogin, role, LogoutFunc}) {
                 <>
                 <div className={classes.sectionDesktop}>
                   <IconButton aria-label="show number of carts" color="inherit">
-                    <Badge badgeContent={1} color="secondary">
+                    <Badge badgeContent={cart.length} color="secondary">
                       <FaCartArrowDown />
                     </Badge>
                   </IconButton>
@@ -543,4 +545,4 @@ const Mapstatetoprops = ({Auth}) => {
   }
 }
 
-export default connect(Mapstatetoprops,{LogoutFunc}) (Header);
+export default connect(Mapstatetoprops,{LogoutFunc, SearchMed}) (Header);

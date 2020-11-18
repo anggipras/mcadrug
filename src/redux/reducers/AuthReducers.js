@@ -10,7 +10,8 @@ const INITIAL_STATE = {
     error: '',
     modalcart: false,
     cart: [],
-    minprice: true
+    minprice: true,
+    searchname: ''
 }
 
 export default (state=INITIAL_STATE, action)=> {
@@ -39,6 +40,8 @@ export default (state=INITIAL_STATE, action)=> {
             return {...state, minprice: false}
         case 'LESSPRICE':
             return {...state, minprice: true}
+        case 'SEARCHMED':
+            return {...state, searchname: action.payload}
         default:
             return state
     }
