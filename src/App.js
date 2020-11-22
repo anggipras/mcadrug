@@ -12,6 +12,7 @@ import ManageProduct from './pages/admin/ManageProd'
 import ManageTrans from './pages/admin/ManageTrans'
 import SearchDrug from './pages/searchdrug/SearchDrug'
 import ProfileDrug from './pages/searchdrug/profileDrug'
+import Payment from './pages/payment/Payment'
 import Loading from './components/Loading'
 import NotFound from './components/NotFound'
 import {KeepLogin} from './redux/actions'
@@ -33,7 +34,13 @@ function App({KeepLogin, isLoading, role}) {
           <Route exact path='/ManageTrans' component={ManageTrans} />
         </>
       )
-    } 
+    } else if(role === 'user') {
+      return (
+        <>
+          <Route exact path='/Payment' component={Payment} />
+        </>
+      )
+    }
   }
 
   if(isLoading) {

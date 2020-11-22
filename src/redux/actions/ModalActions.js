@@ -22,3 +22,10 @@ export const LessPrice = () => {
         type: 'LESSPRICE'
     }
 }
+
+export const FinishCart = (cart) => {
+    return {
+        type: 'FINISHCART',
+        cart: cart
+    }
+}

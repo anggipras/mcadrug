@@ -6,27 +6,13 @@ export const LoginThunk = (datalogin) => {
         dispatch({type: 'LOADING'})
         Axios.post(`${API_URL_SQL}/auth/login`,datalogin)
         .then((res)=> {
-            localStorage.setItem('user', JSON.stringify(res.data))
-            dispatch({type: 'LOGIN', payload: res.data})
+            console.log(res.data);
+            localStorage.setItem('user', JSON.stringify(res.data.datalogin))
+            dispatch({type: 'LOGIN', payload: res.data.datalogin, cart: res.data.cartData})
         }).catch((err)=> {
+            console.log(err.response.data.message);
             dispatch({type: 'ERROR', payload: err.response.data.message})
         })
-        // Axios.get(`${API_URL}/users`,{
-        //     params: {
-        //         email: email,
-        //         password: pass
-        //     }
-        // }).then((res)=> {
-        //     if(res.data.length) {
-        //         localStorage.setItem('user', JSON.stringify(res.data[0]))
-        //         console.log(res.data[0]);
-        //         dispatch({type: 'LOGIN', payload: res.data[0]})
-        //     } else {
-        //         dispatch({type: 'ERROR', payload: 'Kata sandi atau email salah'})
-        //     }
-        // }).catch(err=> {
-        //     dispatch({type: 'ERROR', payload: 'Server tidak ada'})
-        // })
     }
 }
 
@@ -45,13 +31,6 @@ export const KeepLogin = () => {
                 dispatch({type: 'ERROR'})
                 console.log(err.response.data.message);
             })
-            // Axios.get(`${API_URL}/users/${datauser.id}`)
-            // .then((res)=> {
-            //     localStorage.setItem('user', JSON.stringify(res.data))
-            //     dispatch({type: 'LOGIN', payload: datauser})
-            // }).catch((err)=> {
-            //     dispatch({type: 'ERROR'})
-            // })
         }
     }
 }

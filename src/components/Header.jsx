@@ -406,7 +406,7 @@ function Header({username, isLogin, role, LogoutFunc, cart, SearchMed}) {
               role === 'user'?
                 <>
                 <div className={classes.sectionDesktop}>
-                  <IconButton aria-label="show number of carts" color="inherit">
+                  <IconButton aria-label="show number of carts" color="inherit" onClick={()=>history.push('/Payment')}>
                     <Badge badgeContent={cart.length} color="secondary">
                       <FaCartArrowDown />
                     </Badge>

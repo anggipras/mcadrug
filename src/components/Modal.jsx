@@ -13,6 +13,7 @@ import {OpenModal, CloseModal, AcceptPrice, LessPrice} from './../redux/actions'
 import {priceFormatter} from './../helpers/priceformatter'
 import { API_URL_SQL } from '../helpers/apiurl';
 import Axios from 'axios';
+import {useHistory} from 'react-router-dom'
 
 const TheModal = ({CloseModal, OpenModal, AcceptPrice, LessPrice, modalcart, cart, id, token, minprice}) => {
     const [thecart, setthecart] = useState([])
@@ -127,6 +128,11 @@ const TheModal = ({CloseModal, OpenModal, AcceptPrice, LessPrice, modalcart, car
         }
     }
 
+    let history = useHistory()
+    const paymentMethod = () => {
+        history.push('/Payment')
+    }
+
     return (
         <div>
             <Modal size='lg' isOpen={modalcart} toggle={togglecart} >
@@ -156,7 +162,7 @@ const TheModal = ({CloseModal, OpenModal, AcceptPrice, LessPrice, modalcart, car
                     </TableContainer>
                 </ModalBody>
                 <ModalFooter>
-                    <Button variant="contained" color="primary" disabled={minprice === true}>
+                    <Button variant="contained" color="primary" disabled={minprice === true} onClick={paymentMethod}>
                         Lanjutkan Belanja
                     </Button>
                 </ModalFooter>
