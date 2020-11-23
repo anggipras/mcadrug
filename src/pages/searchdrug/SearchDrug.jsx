@@ -110,7 +110,7 @@ function DrugCard({OpenModal, role, id, token, searchname}) {
                 title: 'Oops...',
                 text: 'Anda Admin tidak bisa beli!',
               })
-        } else {
+        } else if(role === 'user') {
             Axios.post(`${API_URL_SQL}/transac/addtocart`,{
                 userid: id,
                 medid: idMed
@@ -123,6 +123,12 @@ function DrugCard({OpenModal, role, id, token, searchname}) {
             }).catch((err)=> {
                 console.log(err.response.data.message);
             })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Login terlebih dahulu!',
+              })
         }
     }
 

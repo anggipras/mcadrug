@@ -132,7 +132,7 @@ function ProfileDrug(props) {
                 title: 'Oops...',
                 text: 'Anda Admin tidak bisa beli!',
               })
-        } else {
+        } else if(props.Auth.role === 'user') {
             Axios.post(`${API_URL_SQL}/transac/addtocart`,{
                 userid: props.Auth.id,
                 medid: props.match.params.id
@@ -145,6 +145,12 @@ function ProfileDrug(props) {
             }).catch((err)=> {
                 console.log(err.response.data.message);
             })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Login terlebih dahulu!',
+              })
         }
     }
 
