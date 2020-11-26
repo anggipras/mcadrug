@@ -31,6 +31,7 @@ import {LogoutFunc, SearchMed} from './../redux/actions'
 import Axios from 'axios';
 import { API_URL_SQL } from '../helpers/apiurl';
 import debounce from 'lodash.debounce'
+import mcadLogo from './../assets/mcadLogo.png'
 
 const drawerWidth = 240;
 
@@ -336,7 +337,7 @@ function Header({username, isLogin, role, LogoutFunc, cart, SearchMed}) {
               aria-label="menu"
               onClick={removeSearch}
             >
-              <img src='https://www.k24klik.com/themes/booster/images/k24klik_logo2.png.pagespeed.ce.MTM09c8bNd.png' width='100%' />
+              <img src={mcadLogo} width='100%' height='100%'/>
             </IconButton>
           </Link>
           <form className={classes.search} onSubmit={onInputSubmit}>

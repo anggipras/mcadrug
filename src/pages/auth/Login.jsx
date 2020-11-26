@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import {connect} from 'react-redux'
 import {LoginThunk} from './../../redux/actions'
 import { Redirect } from 'react-router-dom';
+import mcadLogo2 from './../../assets/mcadLogo2.png'
 
 function Copyright() {
   return (
@@ -31,7 +32,7 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(3),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -77,6 +78,9 @@ function SignIn(props) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+          <img src={mcadLogo2} alt="mcadLogo" width='50%' height='50%' />
+        </div>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -137,7 +141,7 @@ function SignIn(props) {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
+      <Box mt={5}>
         <Copyright />
       </Box>
     </Container>
