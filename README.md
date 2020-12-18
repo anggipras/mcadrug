@@ -1,3 +1,8 @@
+# Notes - See the deployed project
+
+First of all, run the backend https://mcadrugstore-api.herokuapp.com/ since it was deployed to heroku and if no usage for long time, will take to sleep
+Then, run https://mcadrugstore.web.app/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
